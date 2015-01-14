@@ -4,11 +4,14 @@ gem 'rails', '4.2.0'
 gem 'pg', '0.15.1'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'bcrypt-ruby', '3.1.2'
+gem 'faker', '1.1.2'
+gem 'will_paginate', '3.0.4'
+gem 'bootstrap-will_paginate', '0.0.9'
 
 group :development, :test do
   gem 'guard'
   gem 'rspec'
-  gem 'rspec-rails', '2.13.1'
+  gem 'rspec-rails', '~> 2.14.0.rc1' #, '2.13.1'
   gem 'guard-rspec', require: false
 end
 
