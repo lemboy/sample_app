@@ -42,4 +42,51 @@ describe "Micropost pages" do
       end
     end
   end
+  
+  describe "micropost counter" do
+    before do 
+      FactoryGirl.create(:micropost, user: user) 
+      visit root_path
+    end
+
+    it { should have_content("1 micropost") }
+  end
+
+  describe "micropost counter with plur" do
+    before do 
+      2.times { FactoryGirl.create(:micropost, user: user) } 
+      visit root_path
+    end
+
+    it { should have_content("2 microposts") }
+  end
+  
+  describe "pagination" do
+    before do 
+      31.times { FactoryGirl.create(:micropost, user: user) }
+      visit root_path
+    end
+
+    it { should have_selector('div.pagination') }
+
+    it "should list each mpost" do
+      user.microposts.paginate(page: 1).each do |mpost|
+        expect(page).to have_selector('li', text: mpost.content)
+      end
+    end
+  end
+  
+  describe "as another user" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:another_user) { FactoryGirl.create(:user) }
+
+    before do 
+      FactoryGirl.create(:micropost, user: user)
+      sign_in another_user
+      visit user_path(user)
+    end
+
+     it { should_not have_link('delete') }
+  end
+  
 end

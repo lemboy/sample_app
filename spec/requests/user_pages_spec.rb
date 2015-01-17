@@ -160,17 +160,27 @@ describe "User pages" do
   end
 
   describe "admin" do
-    let(:admin) { FactoryGirl.create(:admin) }
-    before {sign_in admin} 
+    let(:adm) { FactoryGirl.create(:admin) }
+#    @adm = FactoryGirl.create(:admin) 
+
+    before do
+      sign_in adm
+      visit users_path
+    end 
 
       describe "should not to be able to delete himself" do
-        before { delete user_path(admin) }
 
-        it { should_not have_selector('div.alert.alert-success') }
-
-#        specify { expect(response).to_not redirect_to(users_url) }
+# Should be correct, but not worked, damn!!!
+          it "should not delete the admin" do
+            expect { delete user_path(adm) }.to_not change(User, :count)
+          end
 
 # Experiments
+#        before do
+#          delete user_path(adm)
+#          pp User.find(adm.id)
+#        end
+##        it { should_not have_selector('div.alert.alert-success') }#        specify { expect(response).to_not redirect_to(users_url) }
 #        specify { expect(User.count).to eq user_cnt  }
 #        specify { expect(admin.reload).to be_nil }
 #        specify { expect(admin.nil?).to eq true }
